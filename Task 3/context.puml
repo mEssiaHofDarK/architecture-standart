@@ -1,0 +1,44 @@
+@startuml
+title "Warmhouse" Context Diagram
+
+top to bottom direction
+
+!include <C4/C4_Context>
+
+Person(cust, "Клиент", "Клиент банка")
+Person(mng_call, "Менеджер колл-центра", "")
+Person(mng_backoff, "Менеджер бек-офиса", "")
+
+
+System(abs,"АБС","Автоматизированная банковская система","[Delphi/Oracle]")
+System(website,"Сайт","Веб сайт банка","[PHP/React.js]")
+System(internet_bank,"Интернет-банк","Клиент-серверное приложение для работы с банком","[ASP.NET MVC 4.5/MS SQL]")
+System(telecom_gateway,"Шлюз для телеком-оператора","Шлюз для взаимодействия с телеком оператором","[???]")
+System(call_center,"Колл-центр","Клиент-серверная система на платформе подрядчика","React.js/Java Spring Boot/PostgreSQL")
+
+
+System_Ext(telecom, "Телеком-оператор", "Внешний оператор для отпраки сообщений")
+System_Ext(ext_call_center, "Партнёрский колл-центр", "Партнёрский кол-центр и подрядчик")
+
+
+Rel(cust, website, "")
+Rel(cust, internet_bank, "")
+
+Rel(mng_call, call_center, "")
+
+Rel(mng_backoff, abs, "")
+
+
+Rel(website, abs, "")
+Rel(internet_bank, abs, "")
+
+
+Rel(call_center, abs, "")
+Rel(ext_call_center, abs, "")
+
+
+Rel(abs, telecom_gateway, "")
+
+
+Rel(telecom_gateway, telecom, "")
+@enduml
