@@ -13,8 +13,8 @@ Person(mng_backoff, "Менеджер бек-офиса", "")
 System(abs,"АБС","Автоматизированная банковская система","[Delphi/Oracle]")
 System(website,"Сайт","Веб сайт банка","[PHP/React.js]")
 System(internet_bank,"Интернет-банк","Клиент-серверное приложение для работы с банком","[ASP.NET MVC 4.5/MS SQL]")
-'System(telecom_gateway,"Шлюз для телеком-оператора","Шлюз для взаимодействия с телеком оператором","[???]")
-'System(call_center,"Колл-центр","Клиент-серверная система на платформе подрядчика","React.js/Java Spring Boot/PostgreSQL")
+System(telecom_gateway,"Шлюз для телеком-оператора","Шлюз для взаимодействия с телеком оператором","[???]")
+System(call_center,"Колл-центр","Клиент-серверная система на платформе подрядчика","React.js/Java Spring Boot/PostgreSQL")
 
 
 System_Ext(telecom, "Телеком-оператор", "Внешний оператор для отпраки сообщений")
