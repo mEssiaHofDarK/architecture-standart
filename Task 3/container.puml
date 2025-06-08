@@ -1,0 +1,79 @@
+@startuml
+title "Standart bank" Container Diagram
+top to bottom direction
+!include <C4/C4_Container>
+
+System_Ext(telecom, "Телеком-оператор", "Внешний оператор для отпраки сообщений")
+System_Ext(ext_call_center, "Партнёрский колл-центр", "Партнёрский кол-центр и подрядчик")
+
+Person(cust, "Клиент", "Клиент банка")
+Person(mng_call, "Менеджер колл-центра", "")
+Person(mng_backoff, "Менеджер бек-офиса", "")
+
+System(website,"Сайт","Веб сайт банка","[PHP/React.js]")
+System(telecom_gateway,"Шлюз для телеком-оператора","Шлюз для взаимодействия с телеком оператором","[???]")
+
+System_Boundary(call_center, "Колл-центр") {
+    Container(call_center_web, "Web-клиент колл-центра", "React.js", "")
+    Container(call_center_back, "Бекенд колл-центра", "Java Spring Boot", "")
+    Container(call_center_crm, "CRM колл-центра", "Java Spring Boot", "")
+    Container(call_center_db, "БД колл-центра", "Postgres", "")
+}
+System_Boundary(kafka, "Kafka") {
+    Container(topic_requests_site, "Топик для заявок на депозит с сайта", "", "")
+    Container(topic_requests_inter_bank, "Топик для заявок на депозит из интернет-банка", "", "")
+    Container(topic_personal_rates, "Топик для персональных ставок", "", "")
+    Container(topic_common_rates, "Топик для общих ставок", "", "")
+}
+System_Boundary(abs, "АБС") {
+    Container(abs_client, "Клиент АБС", "Delphi", "")
+    Container(abs_server, "Сервер АБС", "Oracle/PL SQL", "")
+}
+System_Boundary(internet_bank, "Интернет-банк") {
+  Container(internet_bank_client, "Клиент интернет-банка", "ASP.NET MVC 4.5", "")
+  Container(internet_bank_db, "БД интернет-банка", "MS SQL", "")
+}
+
+
+Rel(cust, website, "")
+Rel(cust, internet_bank_client, "")
+
+Rel(mng_call, call_center_web, "")
+
+Rel(mng_backoff, abs_client, "")
+
+
+Rel(website, topic_requests_site, "")
+
+
+Rel(internet_bank_client, topic_personal_rates, "")
+Rel(internet_bank_client, topic_requests_inter_bank, "")
+Rel(internet_bank_client, internet_bank_db, "")
+Rel(internet_bank_client, telecom_gateway, "")
+
+
+Rel(call_center_web, call_center_back, "")
+Rel(call_center_web, call_center_crm, "")
+Rel(call_center_crm, call_center_db, "")
+Rel(call_center_back, call_center_db, "")
+
+Rel(call_center_crm, abs_server, "")
+
+
+Rel(abs_client, abs_server, "")
+
+Rel(abs_server, topic_personal_rates, "")
+Rel(abs_server, telecom_gateway, "")
+
+
+Rel(telecom_gateway, telecom, "")
+
+
+Rel(topic_common_rates, website, "")
+Rel(topic_common_rates, internet_bank_client, "")
+
+Rel(topic_requests_site, call_center_crm, "")
+Rel(topic_requests_inter_bank, abs_server, "")
+
+Rel(ext_call_center, call_center_crm, "")
+@enduml
