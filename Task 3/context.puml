@@ -1,5 +1,5 @@
 @startuml
-title "Warmhouse" Context Diagram
+title "Standart bank" Context Diagram
 
 top to bottom direction
 
@@ -13,8 +13,9 @@ Person(mng_backoff, "Менеджер бек-офиса", "")
 System(abs,"АБС","Автоматизированная банковская система","[Delphi/Oracle]")
 System(website,"Сайт","Веб сайт банка","[PHP/React.js]")
 System(internet_bank,"Интернет-банк","Клиент-серверное приложение для работы с банком","[ASP.NET MVC 4.5/MS SQL]")
-'System(telecom_gateway,"Шлюз для телеком-оператора","Шлюз для взаимодействия с телеком оператором","[???]")
-'System(call_center,"Колл-центр","Клиент-серверная система на платформе подрядчика","React.js/Java Spring Boot/PostgreSQL")
+System(telecom_gateway,"Шлюз для телеком-оператора","Шлюз для взаимодействия с телеком оператором","[???]")
+System(call_center,"Колл-центр","Клиент-серверная система на платформе подрядчика","React.js/Java Spring Boot/PostgreSQL")
+System(kafka, "Kafka", "Асинхронная шина данных")
 
 
 System_Ext(telecom, "Телеком-оператор", "Внешний оператор для отпраки сообщений")
@@ -29,15 +30,22 @@ Rel(mng_call, call_center, "")
 Rel(mng_backoff, abs, "")
 
 
-Rel(website, abs, "")
-Rel(internet_bank, abs, "")
+Rel(website, kafka, "")
+Rel(internet_bank, kafka, "")
 
 
-Rel(call_center, abs, "")
-Rel(ext_call_center, abs, "")
+Rel(kafka, website, "")
+Rel(kafka, internet_bank, "")
+Rel(kafka, call_center, "")
+
+
+Rel(call_center, kafka, "")
+Rel(ext_call_center, call_center, "")
+Rel(kafka, abs, "Адаптер с троттлингом, чтоб не сложить АБС")
 
 
 Rel(abs, telecom_gateway, "")
+Rel(abs, kafka, "")
 
 
 Rel(telecom_gateway, telecom, "")
