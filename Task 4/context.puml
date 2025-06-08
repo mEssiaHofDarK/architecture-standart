@@ -19,6 +19,7 @@ System(kafka, "Kafka", "Асинхронная шина данных")
 
 
 System_Ext(telecom, "Телеком-оператор", "Внешний оператор для отпраки сообщений")
+System_Ext(ext_call_center, "Партнёрский колл-центр", "Партнёрский кол-центр и подрядчик")
 
 
 Rel(cust, website, "")
@@ -39,6 +40,7 @@ Rel(kafka, call_center, "")
 
 
 Rel(call_center, kafka, "")
+Rel(ext_call_center, call_center, "")
 Rel(kafka, abs, "Адаптер с троттлингом, чтоб не сложить АБС")
 
 
